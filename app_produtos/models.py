@@ -38,6 +38,7 @@ class estabelecimento(models.Model):
     whatsapp = models.CharField(max_length=11, blank=True, null=True)
     email = models.EmailField(blank=True, null=True)
     porte = models.CharField(max_length=10, choices=PORTE)
+    logo_imagem = models.FileField(upload_to='estabelecimentos/')
     responsavel = models.ForeignKey(MyUser, on_delete=models.CASCADE)
 
     def __str__(self):
