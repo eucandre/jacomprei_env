@@ -10,4 +10,6 @@ urlpatterns = [
     #path('', HomePageView.as_view(), name='home'),
     path('search/', SearchResultsView.as_view(), name='search_results'),
     path('produto_upload/', produto_upload, name="produto_upoad"),
+    path('solicita-compra/',solicita_compras, name="solicita_compra"),
+    path('lista-estabelecimentos/',lista_estabelecimentos, name="lista-estabelecimentos"),
 ]+ static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)

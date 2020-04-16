@@ -55,14 +55,37 @@ def produto_upload(request):
     for column in csv.reader(io_string, delimiter=',', quotechar='|'):
         x = column[3].replace('"','')
         created = produtos.objects.update_or_create(
-            estabelecimento_id_id = form.estabelecimento_id,
-            departamento_id=form.departamento,
+            estabelecimento_id_id = 1,
+            departamento_id=1,
             cod_barras = column[0],
             nome= column[1],
             unidade = column[2],
-            valor = x.replace(',','.'),
+            valor = x
             #departamento = column[4]
         )
     context = {}
     return render(request, template, context)
 
+
+def lista_estabelecimentos(request):
+    try:
+        item = estabelecimento.objects.all()
+        return render(request, 'app_produtos/lista-estabelecimentos.html',{'item':item})
+    except estabelecimento.DoesNotExist:
+        raise('Não existe!')
+
+
+
+def solicita_compras(request):
+    if request.method == 'POST':
+        form = FormSolicitacaoProdutos(request.POST)
+        if form.is_valid():
+            item = form.save(commit=False)
+            item.cliente = request.user
+            item.valor = 0
+            for i in form.produtos.valor:
+                item.valor = item.valor+i
+            item.save()
+    else:
+        form = FormSolicitacaoProdutos()
+    return render(request, 'app_produtos/solicita-compra.html', {'form':form})

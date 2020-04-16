@@ -34,6 +34,9 @@ class estabelecimento(models.Model):
     bairro = models.CharField(max_length=255)
     cidade = models.CharField(max_length=255)
     uf = models.CharField(max_length=2)
+    telefone = models.CharField(max_length=11, blank=True, null=True)
+    whatsapp = models.CharField(max_length=11, blank=True, null=True)
+    email = models.EmailField(blank=True, null=True)
     porte = models.CharField(max_length=10, choices=PORTE)
     responsavel = models.ForeignKey(MyUser, on_delete=models.CASCADE)
 
@@ -60,16 +63,14 @@ class produtos(models.Model):
     class Meta:
         verbose_name_plural = 'Produtos cadastrados'
 
+class solicita_compra(models.Model):
+    cliente = models.ForeignKey(MyUser, on_delete=models.CASCADE)
+    produtos = models.ForeignKey(produtos, on_delete=models.CASCADE)
+    valor = models.CharField(max_length=15)
 
-# class responsavel_estabelecimento(models.Model):
-#     responsavel = models.ForeignKey(MyUser, on_delete=models.CASCADE)
-#     estabelecimento_id = models.ForeignKey(estabelecimento,on_delete=models.CASCADE)
-#
-#     def __str__(self):
-#         return self.responsavel.nome
-#
-#     class Meta:
-#         verbose_name_plural = 'Responsável por estabelecimentos'
-#         unique_together = ['responsavel','estabelecimento_id']
-#
-#
+    def __str__(self):
+        return self.cliente.nome
+
+    class Meta:
+        verbose_name_plural = "Solicitação de compras por clientes do sistema"
+
