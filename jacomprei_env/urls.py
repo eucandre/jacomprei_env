@@ -12,4 +12,6 @@ urlpatterns = [
     path('produto_upload/', produto_upload, name="produto_upoad"),
     path('solicita-compra/',solicita_compras, name="solicita_compra"),
     path('lista-estabelecimentos/',lista_estabelecimentos, name="lista-estabelecimentos"),
+    path('detalha-estabelecimentos/<int:nr_item>',detalha_estabeleciemnto, name="detalha-estabelecimentos"),
+    path('produtos-por-departamentos/<int:nr_item>',produtos_por_departamentos, name="produto-departamento"),
 ]+ static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)

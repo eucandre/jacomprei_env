@@ -11,7 +11,9 @@
      <div class="carousel-inner" style="height: 50%">
 
       <div class="carousel-item active" >
-        <img src="{{ item1.imagem.url }}" class="d-block w-100">
+          {% if item1.imagem %}
+            <img src="{{ item1.imagem.url }}" class="d-block w-100">
+          {% endif %}
         <!--  <div class="carousel-caption d-none d-md-block text-dark">
             <h1>OFERTA 1 </h1>
             <p>Super oferta especial</p>
@@ -19,7 +21,9 @@
 
       </div>
       <div class="carousel-item">
-        <img src="{{ item2.imagem.url }}" class=" d-block w-100">
+        {% if item2.imagem %}
+            <img src="{{ item2.imagem.url }}" class="d-block w-100">
+          {% endif %}
       <!--  <div class="carousel-caption d-none d-md-block text-dark">
             <h1>OFERTA 2 </h1>
             <p>Super oferta especial</p>
@@ -27,7 +31,9 @@
       -->
       </div>
       <div class="carousel-item">
-        <img src="imgs/img3.png" class=" d-block w-100">
+        {% if item3.imagem %}
+            <img src="{{ item3.imagem.url }}" class="d-block w-100">
+          {% endif %}
         <!-- <div class="carousel-caption d-none d-md-block text-dark">
             <h1>OFERTA 3 </h1>
             <p>Super oferta especial</p>
@@ -53,87 +59,48 @@
          <h3 class="display-5 my-3 ml-4">Departamentos</h3>
         <!-- <p>Todos os departamentos com imagens</p>-->
        </div>
-   <div class="container-fluid" >
+       <div class="container-fluid" >
 
-     <div class="row my-1 ml-2">
-
-      <div class="col-sm-2 col-md-2">
-        <div class="card">
-          <img class="card-img-top" src="imgs/departamentos/supermercado.png">
-          <div class="card-body">
-            <a href="#" class="card-link"><h5 class="text-center"> Supermercados </h5></a>
-          </div>
-        </div>
-      </div>
-
-
-     </div>
-   </div>
-<!-- departamentos fim-->
+         <div class="row my-1 ml-2" >
+            {% for i in departamentos %}
+              <div class="col-sm-2 col-md-2">
+                <div class="card" style="min-height: 100%; max-height: 100%">
+                  <img class="card-img-top" src="{{ i.imagem.url }}">
+                  <div class="card-body">
+                    <a href="#" class="card-link"><h5 class="text-center"> {{ i.nome }} </h5></a>
+                  </div>
+                </div>
+              </div>
+             {% endfor %}
+         </div>
+       </div>
+    <!-- departamentos fim-->
 
 <!-- container produtos em oferta inicio-->
-<div class="col-12">
+    <div class="col-12">
          <h3 class="display-5 mt-5 mb-3 ml-4">Ofertas especiais</h3>
         <!-- <p>Todos os departamentos com imagens</p>-->
-       </div>
-  <div class="container-fluid" >
+    </div>
+    <div class="container-fluid" >
 
      <div class="row my-1 ml-2">
-
+      {% for p in produtos %}
       <div class="col-sm-3 col-md-3">
-        <div class="card">
-          <img class="card-img-top" src="imgs/produtos/Fritadeira.png">
+        <div class="card" style="min-height: 100%; max-height: 100%">
+            {% if p.imagem %}
+                <img class="card-img-top" src="{{ p.imagem.url }}">
+            {% endif %}
           <div class="card-body">
-            <p class="card-text">Mop Giratório 3 em 1-Refil Microfibra + Refil Tira Pó + Refil Limpeza Pesada</p>
+            <p class="card-text">{{ p.nome }}</p>
             <div class="row">
-              <div class="col-6 col-md-8"> <h3>R$ 129,90</h3></div>
+              <div class="col-6 col-md-8"> <h3>R$ {{ p.valor }}</h3></div>
               <div class="col-6 col-md-4 text-center">Nota 0/5</div>
             </div>
             <a href="#" class="card-link">comprar</a>
           </div>
         </div>
       </div>
-      <div class="col-sm-3 col-md-3">
-        <div class="card">
-          <img class="card-img-top" src="imgs/produtos/fralda.png">
-          <div class="card-body">
-            <p class="card-text">Fralda Huggies T. Mônica Supreme Care Mega M Com 40 Unidades</p>
-            <div class="row">
-              <div class="col-6 col-md-8"> <h3>R$ 70,00</h3></div>
-              <div class="col-6 col-md-4 text-center">Nota 0/5</div>
-            </div>
-            <a href="#" class="card-link">comprar</a>
-          </div>
-        </div>
-      </div>
-      <div class="col-sm-3 col-md-3">
-        <div class="card">
-          <img class="card-img-top" src="imgs/produtos/lg.png">
-          <div class="card-body">
-            <p class="card-text">Smartphone LG K12 Plus 32GB Dual Chip Android 8.1 Oreo Tela 5,7" Octa </p>
-            <div class="row">
-              <div class="col-6 col-md-8"> <h3>R$ 699,00</h3></div>
-              <div class="col-6 col-md-4 text-center">Nota 0/5</div>
-            </div>
-            <a href="#" class="card-link">comprar</a>
-          </div>
-        </div>
-      </div>
-      <div class="col-sm-3 col-md-3">
-        <div class="card">
-          <img class="card-img-top" src="imgs/produtos/Fritadeira.png">
-          <div class="card-body">
-            <p class="card-text">Fritadeira Elétrica Sem Óleo - Air Fryer Mondial AF-30 Family IV 3,5L Preta </p>
-            <div class="row">
-              <div class="col-12 col-md-8"> <h3>R$ 320,00</h3></div>
-              <div class="col-6 col-md-4 text-center">Nota 0/5</div>
-            </div>
-            <a href="#" class="card-link">comprar</a>
-          </div>
-        </div>
-      </div>
-
-
+         {% endfor %}
      </div>
    </div>
   <!-- container produtos em oferta fim-->
@@ -152,64 +119,26 @@
            <div class="row">
              <div class="col-12 ml-4">
 
-
             <div class="container-fluid" >
-                 <div class="row my-1 ml-2">
+                <div class="row my-1 ml-2">
+                    {% for a in atividades %}
                   <div class="col-sm-2 col-md-2">
-                    <div class="card">
-                      <img class="card-img-top" src="imgs/departamentos/supermercado.png">
+                    <div class="card" style="min-height: 100%; max-height: 100%">
+                        {% if a.imagem %}
+                        <img class="card-img-top" src="{{ a.imagem.url }}">
+                        {% endif %}
                       <div class="card-body">
-                        <a href="#" class="card-link"><h5 class="text-center"> Supermercados </h5></a>
+                        <a href="#" class="card-link"><h5 class="text-center"> {{ a.nome }} </h5></a>
                       </div>
                     </div>
                   </div>
-                  <div class="col-sm-2 col-md-2">
-                    <div class="card">
-                      <img class="card-img-top" src="imgs/departamentos/matconst.png">
-                      <div class="card-body">
-                        <a href="#" class="card-link"><h5 class="text-center"> Mat. Construção </h5></a>
-                      </div>
-                    </div>
-                  </div>
-                  <div class="col-sm-2 col-md-2">
-                    <div class="card">
-                      <img class="card-img-top" src="imgs/departamentos/livraria.png">
-                      <div class="card-body">
-                        <a href="#" class="card-link"><h5 class="text-center"> Livraria </h5></a>
-                      </div>
-                    </div>
-                  </div>
-                  <div class="col-sm-2 col-md-2">
-                    <div class="card">
-                      <img class="card-img-top" src="imgs/departamentos/variedades.png">
-                      <div class="card-body">
-                        <a href="#" class="card-link"><h5 class="text-center"> Variedades </h5></a>
-                      </div>
-                    </div>
-                  </div>
-                  <div class="col-sm-2 col-md-2">
-                    <div class="card">
-                      <img class="card-img-top" src="imgs/departamentos/confeccao.png">
-                      <div class="card-body">
-                        <a href="#" class="card-link"><h5 class="text-center"> Confecção </h5></a>
-                      </div>
-                    </div>
-                  </div>
-                  <div class="col-sm-2 col-md-2">
-                    <div class="card">
-                      <img class="card-img-top" src="imgs/departamentos/confeccao.png">
-                      <div class="card-body">
-                        <a href="#" class="card-link"><h5 class="text-center"> Confecção </h5></a>
-                      </div>
-                    </div>
-                  </div>
+                    {% endfor %}
                  </div>
                </div>
              </div>
            </div>
          </div>
        </div>
-
      </div>
    </div>
 

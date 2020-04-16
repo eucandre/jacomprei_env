@@ -5,19 +5,24 @@ from .models import *
 import csv, io
 from django.contrib import messages
 from .forms import *
+import random
 
 def apresentacao(request):
-    # item3 = produtos.objects.all()[(len(produtos.objects.all())-3):]
-    # item2 = produtos.objects.all()[(len(produtos.objects.all()) - 2):]
-    # item1 = produtos.objects.all()[(len(produtos.objects.all()) - 1):]
-    tamanho_produtos = len(produtos.objects.all())
-    if tamanho_produtos == 1:
-        item = produtos.objects.get(pk = (len(produtos.objects.all())))
-        return render(request, 'apresentacao/index.html', {'item': item})
-    item_departamento = departamentos.objects.all()
-    item2 = produtos.objects.get(pk=(len(produtos.objects.all())) - 2)
-    item1 = produtos.objects.get(pk=(len(produtos.objects.all())) - 1)
-    return render(request, 'apresentacao/index.html', {'item2':item2, 'item1':item1})
+    ids = []
+    for i in produtos.objects.all():
+        if i.id:
+            ids.append(i.id)
+    item1 = produtos.objects.get(pk=ids[0])
+    item2 = produtos.objects.get(pk=ids[1])
+    item3 = produtos.objects.get(pk=ids[2])
+    depts = departamentos.objects.all()
+    item_objetos = produtos.objects.all().order_by('?')[:4]
+    item_atividades = atividades.objects.all().order_by('?')[:4]
+    return render(request, 'apresentacao/index.html',
+                  {'item2':item2, 'item1':item1,
+                   'item3':item3, 'departamentos':depts,
+                   'produtos':item_objetos,
+                   'atividades':item_atividades})
 
 class HomePageView(TemplateView):
     template_name = 'home.html'
@@ -25,7 +30,6 @@ class HomePageView(TemplateView):
 class SearchResultsView(ListView):
     model = produtos
     template_name = 'busca/search_results.html'
-
     def get_queryset(self):
         query = self.request.GET.get('q')
         object_list = produtos.objects.filter(
@@ -74,6 +78,13 @@ def lista_estabelecimentos(request):
     except estabelecimento.DoesNotExist:
         raise('Não existe!')
 
+def detalha_estabeleciemnto(request, nr_item):
+    try:
+        item = estabelecimento.objects.get(pk = nr_item)
+        item_objetos = produtos.objects.all().filter(estabelecimento_id=item).order_by('?')[:4]
+        return render(request, 'app_produtos/detalha-estabelecimento.html',{'item':item, 'objetos':item_objetos})
+    except estabelecimento.DoesNotExist:
+        raise ('Não existe!')
 
 
 def solicita_compras(request):
@@ -89,3 +100,11 @@ def solicita_compras(request):
     else:
         form = FormSolicitacaoProdutos()
     return render(request, 'app_produtos/solicita-compra.html', {'form':form})
+
+def produtos_por_departamentos(request, nr_item):
+    try:
+        item = produtos.objects.all().filter(departamento_id = nr_item)
+        dept = departamentos.objects.get(pk = nr_item)
+        return render (request, 'app_produtos/produtos-por-departamento.html',{'item':item,'dept':dept})
+    except produtos.DoesNotExist:
+        raise ('Não existe!')

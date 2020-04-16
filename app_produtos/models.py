@@ -27,6 +27,16 @@ class departamentos(models.Model):
     class Meta:
         verbose_name_plural = 'Departamentos das lojas'
 
+class atividades(models.Model):
+    nome = models.CharField(max_length=255)
+    imagem = models.FileField(upload_to="atividades")
+
+    def __str__(self):
+        return self.nome
+
+    class Meta:
+        verbose_name_plural = 'Atividades dos autônomos'
+
 class estabelecimento(models.Model):
     nome = models.CharField(max_length=255)
     cnpj = models.CharField(max_length=23, unique=True)
@@ -39,6 +49,7 @@ class estabelecimento(models.Model):
     email = models.EmailField(blank=True, null=True)
     porte = models.CharField(max_length=10, choices=PORTE)
     logo_imagem = models.FileField(upload_to='estabelecimentos/')
+    obj_depto = models.ManyToManyField(departamentos)
     responsavel = models.ForeignKey(MyUser, on_delete=models.CASCADE)
 
     def __str__(self):
@@ -75,3 +86,17 @@ class solicita_compra(models.Model):
     class Meta:
         verbose_name_plural = "Solicitação de compras por clientes do sistema"
 
+class autonomos(models.Model):
+    nome = models.CharField(max_length=255)
+    atividade = models.ForeignKey(atividades, on_delete=models.CASCADE)
+    telefone = models.CharField(max_length=11)
+    whatsapp = models.CharField(max_length=11)
+    rua = models.CharField(max_length=255)
+    bairro = models.CharField(max_length=255)
+    cidade = models.CharField(max_length=255)
+
+    def __str__(self):
+        return self.nome
+
+    class Meta:
+        verbose_name_plural = "Autônomos prestadores de serviços"
