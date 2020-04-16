@@ -86,7 +86,6 @@ def detalha_estabeleciemnto(request, nr_item):
     except estabelecimento.DoesNotExist:
         raise ('Não existe!')
 
-
 def solicita_compras(request):
     if request.method == 'POST':
         form = FormSolicitacaoProdutos(request.POST)
@@ -106,5 +105,12 @@ def produtos_por_departamentos(request, nr_item):
         item = produtos.objects.all().filter(departamento_id = nr_item)
         dept = departamentos.objects.get(pk = nr_item)
         return render (request, 'app_produtos/produtos-por-departamento.html',{'item':item,'dept':dept})
+    except produtos.DoesNotExist:
+        raise ('Não existe!')
+
+def lista_departamentos(request):
+    try:
+        item = departamentos.objects.all()
+        return render (request, 'app_produtos/lista-departamentos.html',{'item':item})
     except produtos.DoesNotExist:
         raise ('Não existe!')
