@@ -1,0 +1,29 @@
+{% extends 'base.html' %}
+{% block conteudo %}
+    <div class="container mt-5 mb-5">
+        <div class="mt-2 mb-2">
+            <h4>{{ object_list.count }} Produtos achados! </h4>
+        </div>
+        <hr>
+        <div class="row">
+            {% for i in object_list %}
+                <div class="col-sm-3 col-md-3" >
+                    <div class="card" style="min-height: 100%; height: 100%">
+                      <img class="card-img-top" src="{{ i.imagem.url }}">
+                      <div class="card-body">
+                        <p class="card-text">{{ i.nome }}</p>
+                        <div class="row">
+                          <div class="col-6 col-md-8"> <h3>R$ {{ i.valor }}</h3></div>
+                          <div class="col-6 col-md-4 text-center">Nota 0/5</div>
+                        </div>
+                        <a href="#" class="card-link">comprar</a>
+                          <hr>
+                          <a href="#" class="card-link">{{ i.estabelecimento_id.nome }}</a>
+                      </div>
+                    </div>
+                </div>
+                <hr>
+            {% endfor %}
+        </div>
+    </div>
+{% endblock %}
