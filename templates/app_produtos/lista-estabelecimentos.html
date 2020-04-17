@@ -1,0 +1,17 @@
+{% extends 'base.html' %}
+{% block conteudo %}
+    <div class="mt-5 mb-5 ml-5 col-9">
+        <div class="row">
+         {% for i in item %}
+          <div class="col-sm-4">
+            <div class="card" style="min-height: 100%; max-height: 100%">
+              <div class="card-body">
+                <img src="{{ i.logo_imagem.url }}" width="250" class="img-thumbnail mb-2">
+                <a href="#" class="btn btn-primary">Ir até {{ i.nome }} </a>
+              </div>
+            </div>
+          </div>
+         {% endfor %}
+        </div>
+    </div>
+{% endblock %}

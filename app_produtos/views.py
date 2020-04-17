@@ -1,3 +1,4 @@
+from django.http import Http404
 from django.shortcuts import render
 from django.views.generic import ListView, TemplateView
 from django.db.models import Q
@@ -6,6 +7,7 @@ import csv, io
 from django.contrib import messages
 from .forms import *
 import random
+from django.core.exceptions import ObjectDoesNotExist
 
 def apresentacao(request):
     ids = []
@@ -86,25 +88,64 @@ def detalha_estabeleciemnto(request, nr_item):
     except estabelecimento.DoesNotExist:
         raise ('Não existe!')
 
-def solicita_compras(request):
-    if request.method == 'POST':
-        form = FormSolicitacaoProdutos(request.POST)
-        if form.is_valid():
-            item = form.save(commit=False)
-            item.cliente = request.user
-            item.valor = 0
-            for i in form.produtos.valor:
-                item.valor = item.valor+i
-            item.save()
-    else:
-        form = FormSolicitacaoProdutos()
-    return render(request, 'app_produtos/solicita-compra.html', {'form':form})
-
-def produtos_por_departamentos(request, nr_item):
+def comprar(request,nr_item, id_loja):
     try:
-        item = produtos.objects.all().filter(departamento_id = nr_item)
-        dept = departamentos.objects.get(pk = nr_item)
-        return render (request, 'app_produtos/produtos-por-departamento.html',{'item':item,'dept':dept})
+        if request.method == 'POST':
+            form = FormSolicitacaoProdutos(request.POST)
+            if form.is_valid():
+                item = form.save(commit=False)
+                item.produtos = request.GET.get('form.produtos')
+                item.cliente = request.user
+                item.valor = form.quantidade*item.produtos.count()
+                item.save()
+        else:
+            form = FormSolicitacaoProdutos()
+            loja = estabelecimento.objects.get(pk = id_loja)
+            item_produto = produtos.objects.filter(estabelecimento_id=id_loja).get(pk=nr_item)
+            return render(request, 'app_produtos/solicita-compra.html',{'item':item_produto, 'loja':loja, 'form':form})
+    except ObjectDoesNotExist:
+        raise Http404("Não existe")
+
+def comprar_dois(request,nr_item,nr_item2):
+    try:
+        item_produto = produtos.objects.get(pk = nr_item)
+        item_produto2 = produtos.objects.get(pk=nr_item2)
+        return render(request, 'app_produtos/solicita-compra.html',{'item':item_produto, 'item2':item_produto2})
+    except ObjectDoesNotExist:
+        raise Http404("Não existe")
+
+def comprar_tres(request,nr_item,nr_item2,nr_item3):
+    try:
+        item_produto = produtos.objects.get(pk = nr_item)
+        item_produto2 = produtos.objects.get(pk=nr_item2)
+        return render(request, 'app_produtos/solicita-compra.html',{'item':item_produto, 'item2':item_produto2})
+    except ObjectDoesNotExist:
+        raise Http404("Não existe")
+
+def comprar_quatro(request,nr_item,nr_item2,nr_item3, nr_item4):
+    try:
+        item_produto = produtos.objects.get(pk = nr_item)
+        item_produto2 = produtos.objects.get(pk=nr_item2)
+        return render(request, 'app_produtos/solicita-compra.html',{'item':item_produto, 'item2':item_produto2})
+    except ObjectDoesNotExist:
+        raise Http404("Não existe")
+
+def comprar_cinco(request,nr_item,nr_item2,nr_item3, nr_item4, nr_item5):
+    try:
+        item_produto = produtos.objects.get(pk = nr_item)
+        item_produto2 = produtos.objects.get(pk=nr_item2)
+        return render(request, 'app_produtos/solicita-compra.html',{'item':item_produto, 'item2':item_produto2})
+    except ObjectDoesNotExist:
+        raise Http404("Não existe")
+
+
+def produtos_por_departamentos_da_loja(request, nr_item):
+    try:
+        loja = estabelecimento.objects.get(pk = nr_item)
+        departamento = departamentos.objects.get(pk = nr_item)
+        item = produtos.objects.all().filter(estabelecimento_id__nome=loja.nome, departamento_id=departamento.id)
+
+        return render (request, 'app_produtos/produtos-departamento-loja.html',{'item':item,'loja':loja,'dept':departamento})
     except produtos.DoesNotExist:
         raise ('Não existe!')
 
@@ -113,4 +154,27 @@ def lista_departamentos(request):
         item = departamentos.objects.all()
         return render (request, 'app_produtos/lista-departamentos.html',{'item':item})
     except produtos.DoesNotExist:
+        raise ('Não existe!')
+
+def lista_autonomos_atividade(request, nr_item):
+    try:
+        item = autonomos.objects.all().filter(atividade_id=nr_item)
+        atv = atividades.objects.get(pk=nr_item)
+        return render (request, 'app_produtos/lista-autonomos-atividade.html',{'item':item,'atividade':atv})
+    except produtos.DoesNotExist:
+        raise ('Não existe!')
+
+
+def detalha_autonomo(request, nr_item):
+    try:
+        item = autonomos.objects.get(pk = nr_item)
+        return render(request, 'app_produtos/detalha-autonomo.html',{'item':item})
+    except autonomos.DoesNotExist:
+        raise ('Não existe!')
+
+def lista_lojas_por_departamento(request, nm_item):
+    try:
+        item = estabelecimento.objects.all().filter(obj_depto__nome__contains=nm_item)
+        return render(request, 'app_produtos/lists-de-lojas-por-departamento.html',{'item':item})
+    except autonomos.DoesNotExist:
         raise ('Não existe!')

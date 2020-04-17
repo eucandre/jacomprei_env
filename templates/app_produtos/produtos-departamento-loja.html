@@ -1,0 +1,28 @@
+{% extends 'base.html' %}
+{% block conteudo %}
+    <div class="col-12">
+         <h3 class="display-5 mt-5 mb-3 ml-4">Ofertas {{ loja.nome }}, {{ dept.nome }}</h3>
+        <!-- <p>Todos os departamentos com imagens</p>-->
+    </div>
+    <div class="container-fluid">
+     <div class="row my-1 ml-2">
+      {% for p in item %}
+      <div class="col-sm-3 col-md-3">
+        <div class="card" style="min-height: 100%; max-height: 100%">
+            {% if p.imagem %}
+                <img class="card-img-top" src="{{ p.imagem.url }}">
+            {% endif %}
+          <div class="card-body">
+            <p class="card-text">{{ p.nome }}</p>
+            <div class="row">
+              <div class="col-6 col-md-8"> <h3>R$ {{ p.valor }}</h3></div>
+              <div class="col-6 col-md-4 text-center">Nota 0/5</div>
+            </div>
+            <a href="#" class="card-link">comprar</a>
+          </div>
+        </div>
+      </div>
+         {% endfor %}
+     </div>
+   </div>
+{% endblock %}

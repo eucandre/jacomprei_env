@@ -10,5 +10,5 @@ class FormProdutos(forms.ModelForm):
 class FormSolicitacaoProdutos(forms.ModelForm):
     class Meta:
         model = solicita_compra
-        exclude=['cliente','valor']
-        fields = ['produtos',]
+        exclude=['cliente','valor', 'produtos']
+        fields = ['quantidade',]

@@ -78,6 +78,7 @@ class produtos(models.Model):
 class solicita_compra(models.Model):
     cliente = models.ForeignKey(MyUser, on_delete=models.CASCADE)
     produtos = models.ForeignKey(produtos, on_delete=models.CASCADE)
+    quantidade = models.IntegerField()
     valor = models.CharField(max_length=15)
 
     def __str__(self):
@@ -94,6 +95,7 @@ class autonomos(models.Model):
     rua = models.CharField(max_length=255)
     bairro = models.CharField(max_length=255)
     cidade = models.CharField(max_length=255)
+    imagem = models.FileField(upload_to="autonomos")
 
     def __str__(self):
         return self.nome
